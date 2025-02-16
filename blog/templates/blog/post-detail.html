@@ -14,11 +14,13 @@
         {{ post.content|safe }}
     {% endcol %}
 {% endrow %}
+
+<p></p>
+{% include 'blog/post-comments.html' %}
+
 <div class="row">
     <div class="col">
         {% recent_post post %}
-
     </div>
 </div>
-
 {% endblock %}
