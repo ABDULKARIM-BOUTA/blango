@@ -2,7 +2,6 @@ from django.shortcuts import render, get_object_or_404, redirect
 from blog.models import Post
 from django.utils import timezone
 from blog.forms import CommentForm
-
 # Create your views here.
 
 def index(request):
