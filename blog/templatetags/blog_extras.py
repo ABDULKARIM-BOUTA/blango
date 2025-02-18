@@ -6,6 +6,9 @@ from  blog.models import Post
 
 register = template.Library()
 
+def recent_posts(post):
+    Post.objects.filter(pk=pk).order_by(published_at)
+
 @register.simple_tag()
 def row(extra_classes=""):
     return format_html('<div class="row {}">', extra_classes)
