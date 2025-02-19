@@ -28,3 +28,4 @@ def post_detail(request, slug):
 
     context = {'post':post, 'comment_form':comment_form}
     return render(request, "blog/post-detail.html", context)
+

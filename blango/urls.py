@@ -17,11 +17,11 @@ from django.contrib import admin
 from django.urls import path, include
 import debug_toolbar
 from django.conf import settings
-import blog
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('blog.urls'))
+    path('', include('blog.urls')),
+    path('', include('blango_auth.urls')),
 ]
 
 if settings.DEBUG:
