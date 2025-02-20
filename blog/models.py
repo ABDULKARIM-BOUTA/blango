@@ -34,7 +34,7 @@ class Post(models.Model):
     published_at = models.DateTimeField(blank=True, null=True, db_index=True)
     title = models.CharField(max_length=100)
     content = models.TextField()
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True)
     summary = models.TextField(max_length=500)
     tags = models.ManyToManyField(Tag, related_name='posts')
     comments = GenericRelation(Comment)
