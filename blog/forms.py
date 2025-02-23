@@ -1,8 +1,7 @@
 from  django import forms
-from blog.models import Comment
+from blog.models import Comment, Post
 from crispy_forms.layout import Submit
 from crispy_forms.helper import FormHelper
-
 
 class CommentForm(forms.ModelForm):
     class Meta:
@@ -13,4 +12,5 @@ class CommentForm(forms.ModelForm):
         super(CommentForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.add_input(Submit('submit', 'Submit'))
+
 
