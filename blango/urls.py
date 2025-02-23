@@ -22,7 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('blog.urls')),
     path('', include('blango_auth.urls')),
-    path('api/v1/', include('blog.api_urls')),
+    path('api/v1/', include('blog.api.urls')),
 ]
 
 if settings.DEBUG:
