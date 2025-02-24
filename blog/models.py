@@ -22,7 +22,7 @@ class Comment(models.Model):
     content_object = GenericForeignKey('content_type', 'object_id')
 
 class Tag(models.Model):
-    name = models.TextField(max_length=100)
+    name = models.TextField(max_length=100, unique=True)
 
     def __str__(self):
         return self.name
