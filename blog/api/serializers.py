@@ -1,7 +1,21 @@
 from rest_framework import serializers
-from blog.models import Post, Tag
+from blog.models import Post, Tag, Comment
 from blango_auth.models import User
 
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email']
+
+class CommentSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False)
+    creator = UserSerializer(read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = ['id', 'creator', 'edited_at', 'created_at', 'content']
+        readonly = ['edited_at', 'created_at']
 
 class PostSerializer(serializers.ModelSerializer):
     tags = serializers.SlugRelatedField(
@@ -17,8 +31,32 @@ class PostSerializer(serializers.ModelSerializer):
         fields = "__all__"
         readonly = ['modified_at','published_at']
 
-
-class UserSerializer(serializers.ModelSerializer):
+class TagSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ['first_name', 'last_name', 'email']
+        model = Tag
+        fields = '__all__'
+
+class TagField(serializers.SlugRelatedField):
+    def to_internal_value(self, data):
+        try:
+            return self.get.querryset().get_or_create(value=data.lower())[0]
+        except (ValueError,TypeError):
+            self.fail(f"Tag value {data} is invalid")
+
+class PostDetailSerializer(serializers.ModelSerializer):
+    comments = CommentSerializer(many=True)
+
+    def update(self, instance, validated_data):
+        comments = validated_data.pop('comments')
+        instance = super(PostDetailSerializer, self).update(instance, validated_data)
+
+        for comment_data in comments:
+            if comment_data.get('id'):
+                continue
+
+            comment = Comment(**comment_data)
+            comment.creator = self.context["request"].user
+            comment.content_object = instance
+            comment.save()
+
+        return instance
